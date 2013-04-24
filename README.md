@@ -9,6 +9,7 @@ NOTE: Some features of this project including auto-updating and directory deleti
 
 - PHP 5
 - Java 7
+- MySQL with PDO on
 
 ### Installation
 
