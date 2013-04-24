@@ -1,7 +1,7 @@
 ## Mine-Panel
 A lightweight Minecraft control panel for hosting companies
 
-MCHostPanel can manage an unlimited number of Minecraft control panels, including CraftBukkit, Tekkit, and any other custom build that uses a .jar file.
+Mine-Panel can manage an unlimited number of Minecraft control panels, including CraftBukkit, Tekkit, and any other custom build that uses a .jar file.
 
 NOTE: Some features of this project including auto-updating and directory deleting/renaming are currently broken, and have been disabled.
 
