@@ -1,48 +1,43 @@
 <?php
 require_once 'inc/lib.php';
-
 session_start();
-
-if($_SESSION['user']) {
-
-	if(!$user = user_info($_SESSION['user'])) {
-		// User does not exist, redirect to login page
-		header('Location: .');
-		exit('Not Authorized');
-	}
-
-} elseif($_POST['user'] && $_POST['pass']) {
-
-	// Get user data
-	$user = user_info($_POST['user']);
-
-	$_SESSION['is_admin'] = $user['role'] == 'admin';
-
-	// Check user exists and password is good
-	if(!$user || !bcrypt_verify($_POST['pass'],$user['pass'])) {
-		// Login failure, redirect to login page
-		header('Location: ./?error=badlogin');
-		exit('Not Authorized');
-	}
-
-	// Current user is valid
-	$_SESSION['user'] = $user['user'];
-
+if ($_SESSION['user']) {
+    if (!$user = user_info($_SESSION['user'])) {
+        // User does not exist, redirect to login page
+        header('Location: .');
+        exit('Not Authorized');
+    }
+} elseif ($_POST['user'] && $_POST['pass']) {
+    // Get user data
+    $user = user_info($_POST['user']);
+//riun that did you copy over lib.php?
+    //you made a change? yeah... haha right.. okay doing it now
+    //so that's your pass....i'm guessing it's encrypted in some way... yeah..how? i will show you
+    $_SESSION['is_admin'] = $user['role'] == 'admin'; //yup
+    // Check user exists and password is good
+    if ($user === false || !bcrypt_verify($_POST['pass'], $user['pass'])) {
+        // Login failure, redirect to login page
+        header('Location: ./?error=badlogin');
+        //right, so these passwords are different...they're returning two different encryptions... herm...go back into the DB and sotor that new encrypted pass in it ok
+        exit('Not Authorized');//run taht
+        // DECODE FOR ABOVE      your pass: '.$_POST['pass'].' stored pass: '.$user['pass']. 'and the encrypted version of your pass is..' . bcrypt($_POST['pass'])
+    }
+    // Current user is valid run that
+    $_SESSION['user'] = $user['user'];
 } else {
-
-	// Not logged in, redirect to login page
-	header('Location: .');
-	exit('Not Authorized');
-
+    // Not logged in, redirect to login page
+    header('Location: .');
+    exit('Not Authorized');
 }
-?><!doctype html>
+?>
+<!doctype html>
 <html>
 <head>
 	<title>Dashboard | Mine-Panel</title>
+        <link rel="stylesheet" href="<?php echo KT_THEME_DIRECTORY; ?>/css/bootstrap.css">
 	<link rel="stylesheet" href="<?php echo KT_THEME_DIRECTORY; ?>/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo KT_THEME_DIRECTORY; ?>/css/bootstrap-responsive.min.css">
-	<link rel="stylesheet" href="<?php echo KT_THEME_DIRECTORY; ?>/css/smooth.css" id="smooth-css">
-	<link rel="stylesheet" href="<?php echo KT_THEME_DIRECTORY; ?>/css/style.css">
+        <link rel="stylesheet" href="<?php echo KT_THEME_DIRECTORY; ?>/css/docs.css">
 	<meta name="author" content="">
 	<style type="text/css">
             #cmd,#log{background-color:#000;color:#fff;}
@@ -54,6 +49,8 @@ if($_SESSION['user']) {
 	</style>
 	<script src="<?php echo KT_THEME_DIRECTORY; ?>/js/jquery-1.7.2.min.js"></script>
 	<script src="<?php echo KT_THEME_DIRECTORY; ?>/js/bootstrap.min.js"></script>
+        <script src="<?php echo KT_THEME_DIRECTORY; ?>/js/bootstrap-dropdown.js"></script>
+        <script src="<?php echo KT_THEME_DIRECTORY; ?>/js/js/bootstrap-modal.js"></script>
 	<script type="text/javascript">
 		function updateStatus(once) {
 			$.post('ajax.php',{
@@ -157,72 +154,101 @@ if($_SESSION['user']) {
 		});
 	</script>
 </head>
-<body>
-<?php require 'inc/top.php'; ?>
-	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="dashboard.php">Dashboard</a></li>
-		<li><a href="files.php">File Manager</a></li>
-		<li><a href="console.php">Console</a></li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active">
+    <body style="background-image: url('<?php echo KT_THEME_DIRECTORY; ?>/img/squares.png');">
+        
+        <div id="update" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="doUpdate" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3 id="myModalLabel">Update your server...</h3>
+            </div>
+            <div class="modal-body">
+                <p>You can get a more detailed list of available updates from <a href="./updates.php">here</a>.</p></br>
+                <div align="center">
+                    <a href="./update.php?s=minecraft_server" class="btn btn-success">Update Minecraft</a></br></br>
+                    <a href="./update.php?s=craftbukkit" class="btn btn-success">Update Craftbukkit</a>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="/" style="float: left; padding-right: 20px; color: #fff; margin-left: 0px;">Mine-Panel</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active">
+                                <a href="./dashboard.php">Dashboard</a>
+                            </li>
+                            <li class="">
+                                <a href="./console.php">Console</a>
+                            </li>
+                            <li class="">
+                                <a href="./files.php">File Manager</a>
+                            </li>
+                        </ul>
 <?php if($user['ram']) { ?>
-			<div class="row-fluid">
-				<div class="span5">
-					<div class="well">
-						<legend>Server Controls <small>Start, Stop, Reboot and Update.</small></legend>
-						<div class="btn-toolbar">
-							<div class="btn-group">
-								<button class="btn btn-large btn-primary ht" id="btn-srv-start" title="Start" disabled><i class="icon-play"></i></button>
-								<button class="btn btn-large btn-danger ht" id="btn-srv-stop" title="Stop" disabled><i class="icon-stop"></i></button>
-							</div>
-							<div class="btn-group">
-								<button class="btn btn-large btn-warning ht" id="btn-srv-restart" title="Restart" disabled><i class="icon-refresh"></i></button>
-							</div>
-							<!-- Lappy's a dick, so no one gets updates anymore.
-							<div class="btn-group">
-								<a class="btn btn-large btn-success dropdown-toggle" data-toggle="dropdown" href="#">Update <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="update.php?s=craftbukkit">CraftBukkit</a></li>
-									<li><a href="update.php?s=minecraft_server">Minecraft</a></li>
-								</ul>
-							</div>-->
-						</div>
-						<!--
-						<div>Update Server: 
-							<div class="btn-group" style="display: inline-block;">
-								<button class="btn btn-small" id="btn-upd-cb">CraftBukkit</button>
-								<button class="btn btn-small" id="btn-upd-mc">Minecraft Server</button>
-							</div>
-						</div>
-						<br>
-						<p class="alert alert-info">Updating will stop your server and install the latest CraftBukkit Recommended Build or offical Minecraft server release.</p>
-						-->
-					</div>
-					<div class="well">
-						<legend>Server Information <small>Information about your server.</small></legend>
-						<p><b>Server Status:</b> <span class="label" id="lbl-status">Checking&hellip;</span><br>
-						    <b>IP:</b> <?php echo KT_LOCAL_IP.':'.$user['port']; ?><br>
-							<b>RAM:</b> <?php echo $user['ram'].'MB'; ?>
-						</p>
-					</div>
-					<footer class="muted">&copy; <?php echo date('Y'); ?> Alan Hardman</footer>
-				</div>
-				<div class="span7">
-					<pre id="log" class="well well-small"></pre>
-					<form id="frm-cmd">
-						<input type="text" id="cmd" name="cmd" maxlength="250" placeholder="Enter a command" autofocus>
-					</form>
-				</div>
-			</div>
-<?php
+                        <div class="btn-group" style="float: right;">
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                <img src="https://minotar.net/helm/Craytor/60.png" alt="Craytor" align="right" style="height: 20px; width: 20px; float: left; padding-right: 5px;"> Craytor
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="">Dummy link...</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="padding-top: 40px;">
+            <div class="row">
+                <div class="span3">
+                    <h3>Quick Actions</h3>
+                    <div style="text-align:center;">
+                        <button id="btn-srv-start" class="btn btn-success" disabled>Start</button> <button id="btn-srv-restart" class="btn btn-warning" disabled>Reboot</button> <button href="#" id="btn-srv-stop" class="btn btn-danger" disabled>Stop</button></br><a href="#update" class="btn btn-info" role="button" class="btn" data-toggle="modal" style="margin-top: 4px;">Update</a><br />
+                    </div>
+                    <h3>Server Information</h3>
+                    <b>IP:</b> <?php echo KT_LOCAL_IP; ?><br />
+                    <b>Port:</b> <?php echo $user['port']; ?><br />
+                    <b>RAM:</b> <?php echo $user['ram']; ?> MB<br />
+                    <footer>
+                        </br>
+                        <p>Copyright T.J.s Web Development & T.J. Youschak</p>
+                    </footer>
+                </div>
+                <div class="span9">
+                    <h3>Console</h3>
+                    <pre id="log" style="color: white; background-color: #000000; width: 100%; height: 380px; font-weight:bold; resize: none; margin-right: 0px;"> </pre>
+                    <form id="frm-cmd">
+                        <input type="text" id="cmd" name="cmd" maxlength="250" style="color: white; background-color: #000000; width: 100%; font-weight:bold;" placeholder="Enter a console command here (excluding the /)" autofocus>
+                    </form>
+                </div>
+            </div>
+            <?php
 } else
 	echo '
 			<p class="alert alert-info">Your account does not have a server.</p>
-			<footer class="muted">&copy; '.date('Y').' Alan Hardman</footer>
+			<footer>
+                </br>
+                <p style="margin-left: 0px;">Copyright T.J.s Web Development & T.J. Youschak</p>
+            </footer>
 ';
 ?>
-		</div>
-	</div>
+        </div>
+    </body>
+    
+    
+    
+    
 </body>
 </html>
