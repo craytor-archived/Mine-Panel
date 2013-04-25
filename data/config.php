@@ -1,10 +1,19 @@
-<?php // MCHostPanel Configuration
+<?php // Mine-Panel Configuration
+
+// Database Details
+define('KT_DATABASE_HOST','localhost');
+define('KT_DATABASE_USERNAME','minepanel');
+define('KT_DATABASE_PASSWORD','mcpanel');
+define('KT_DATABASE_DB','minepanel'); // THIS CURRENTLY DOES NOT WORK, YOU NEED TO CREATE A DATABASE BY THE NAME OF minepanel
 
 // Server IP Address
 define('KT_LOCAL_IP','184.164.143.50');
 
+// Themeing
+define('KT_THEME_DIRECTORY','themes/default');
+
 // Prefix for GNU-Screen names (prepended to username)
-define('KT_SCREEN_NAME_PREFIX','mchp-');
+define('KT_SCREEN_NAME_PREFIX','mp-');
 
 // Path to download server updates from (uses wget)
 define('KT_UPDATE_URL_MC','http://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar');

@@ -105,6 +105,11 @@ function getsize($file) {
 	return $size;
 }
 
+// *************************************** //
+// *************************************** //
+// ********** READ THE LOG FILE ********** //
+// *************************************** //
+// *************************************** //
 function __file_backread_helper(&$haystack,$needle,$x) { 
     $pos=0;$cnt=0;
     while($cnt < $x && ($pos=strpos($haystack,$needle,$pos))!==false){$pos++;$cnt++;}  
@@ -334,24 +339,41 @@ function server_running($name) {
 ////////////////////
 
 // Add a new user
-function user_add($user,$pass,$role,$home,$ram=512,$port=25565) {
-	
-	// Prevent overwriting an existing user
-	if(is_file('data/users/'.strtolower(clean_alphanum($user))))
-		return false;
-	
-	// Create user array
-	$user = array(
-		'user' => clean_alphanum($user),
-		'pass' => bcrypt($pass),
-		'role' => $role,
-		'home' => rtrim(strtr($home,'\\','/'),'/'),
-		'ram'  => intval($ram),
-		'port' => intval($port)
-	);
-	
-	// Write to file
-	file_put_contents('data/users/'.strtolower($user['user']),json_encode($user));
+function user_add($user,$pass,$role,$home,$ram,$port) {
+    
+    
+        // Details for query
+	$PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
+        $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
+        $dbh = new PDO('mysql:host=localhost;dbname=minepanel', $PDOUser, $PDOPass);
+        $dbh->exec("set names utf8");
+        $stmt = $dbh->prepare("INSERT INTO users (ID, email, user, pass, role, home, ram, ip, port, fName, lName) VALUES (:ID, :email, :user, :pass, :role, :home, :ram, :ip, :port, :fName, :lName)");
+        
+        // Pass items in to get cleaned
+        $id = null;
+        $userEnter = clean_alphanum($user);
+        $passEnter = bcrypt($pass);
+        $homeEnter = rtrim(strtr($home,'\\','/'),'/');
+        $ramEnter = intval($ram);
+        $portEnter = intval($port);
+        $notApplicable = "No data yet";
+        
+        // Clean items up, get them clean of any hazards
+        $stmt->bindParam(':ID', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':email', $notApplicable); // This settings will come later
+        $stmt->bindParam(':user', $userEnter);
+        $stmt->bindParam(':pass', $passEnter);
+        $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':home', $homeEnter);
+        $stmt->bindParam(':ram', $ramEnter);
+        $stmt->bindParam(':ip', $notApplicable); // This settings will come later
+        $stmt->bindParam(':port', $portEnter);
+        $stmt->bindParam(':fName', $notApplicable); // This settings will come later
+        $stmt->bindParam(':lName', $notApplicable); // This settings will come later
+        //
+        
+        mkdir($home, 0777);
+        
 }
 
 // Delete a user
@@ -366,10 +388,39 @@ function user_delete($user) {
 
 // Get user data
 function user_info($user) {
-	if(is_file('data/users/'.strtolower(clean_alphanum($user))))
-		return json_decode(file_get_contents('data/users/'.strtolower(clean_alphanum($user))),true);
-	else
+        $PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
+        $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
+        $dbh = new PDO('mysql:host=localhost;dbname=minepanel', $PDOUser, $PDOPass);
+        $dbh->exec("set names utf8");
+        $stmt = $dbh->prepare("SELECT 1 FROM users WHERE user = :user");//you're prepareing this query twice. Why?
+        
+        // Pass items in to get cleaned
+        $stmt->bindParam(':user', $user);
+        
+        // Check it
+        if ($stmt->execute() > 0) {
+                $data = $dbh->prepare("SELECT * FROM users WHERE user = :user");
+                $data->bindParam(':user', $user);
+               $data->execute();
+             
+                $results = $data->Fetch( PDO::FETCH_ASSOC );//you need another code editor...
+                
+                return $results;//run that, please   cra[, sorry   run that now
+                //run this script, pelase    run that   do we need that exit; gone?
+                //right, so i think i finally understand what you're trying to do. But you don't need to use JSON with the database version, as it's already returned as an array.
+        } else {
+                return false;
+        }
+    
+    
+    
+    
+    
+	/*if(is_file('data/users/'.strtolower(clean_alphanum($user)))) {
+		echo 'returning: '. json_decode(file_get_contents('data/users/'.strtolower(clean_alphanum($user))),true);
+        } else {
 		return false;
+        }*/
 }
 
 // List users
