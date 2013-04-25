@@ -7,7 +7,7 @@ define('KT_DATABASE_PASSWORD','mcpanel');
 define('KT_DATABASE_DB','minepanel'); // THIS CURRENTLY DOES NOT WORK, YOU NEED TO CREATE A DATABASE BY THE NAME OF minepanel
 
 // Server IP Address
-define('KT_LOCAL_IP','184.164.143.50');
+define('KT_LOCAL_IP','75.102.38.246');
 
 // Themeing
 define('KT_THEME_DIRECTORY','themes/default');

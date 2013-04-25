@@ -27,8 +27,6 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 	</style>
 	<script src="<?php echo KT_THEME_DIRECTORY; ?>/js/jquery-1.7.2.min.js"></script>
 	<script src="<?php echo KT_THEME_DIRECTORY; ?>/js/bootstrap.min.js"></script>
-        <script src="<?php echo KT_THEME_DIRECTORY; ?>/js/bootstrap-dropdown.js"></script>
-        <script src="<?php echo KT_THEME_DIRECTORY; ?>/js/js/bootstrap-modal.js"></script>
 	<script type="text/javascript">
             function refreshLog() {
                 updateStatus();
@@ -122,11 +120,12 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
                             <li class="">
                                 <a href="./files.php">File Manager</a>
                             </li>
+                            <?php if ($_SESSION['is_admin'] || $user['role'] == 'admin') { ?> <li class=""> <a href="admin.php">Administration</a> </li><?php } ?>
                         </ul>
 <?php if($user['ram']) { ?>
                         <div class="btn-group" style="float: right;">
                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <img src="https://minotar.net/helm/Craytor/60.png" alt="Craytor" align="right" style="height: 20px; width: 20px; float: left; padding-right: 5px;"> Craytor
+                                <img src="https://minotar.net/helm/<?php echo urlencode($user['user']); ?>/60.png" alt="<?php echo $user['user']; ?>" align="right" style="height: 20px; width: 20px; float: left; padding-right: 5px;"> <?php echo $user['user']; ?>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
