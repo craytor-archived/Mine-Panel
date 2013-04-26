@@ -1,4 +1,4 @@
-<?php // Copyright (c) Alan Hardman 2013
+<?php
 
 require_once 'data/config.php';
 require_once 'inc/mclogparse.inc.php';
@@ -340,8 +340,6 @@ function server_running($name) {
 
 // Add a new user
 function user_add($user,$pass,$role,$home,$ram,$port) {
-    
-    
         // Details for query
 	$PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
         $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
@@ -353,7 +351,7 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
         $id = null;
         $userEnter = clean_alphanum($user);
         $passEnter = bcrypt($pass);
-        $homeEnter = rtrim(strtr($home,'\\','/'),'/');
+        $homeEnter = $home;
         $ramEnter = intval($ram);
         $portEnter = intval($port);
         $notApplicable = "No data yet";
@@ -373,6 +371,9 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
         //
         
         mkdir($home, 0777);
+        
+        // Insert the data into database
+        $stmt->execute();
         
 }
 

@@ -98,7 +98,7 @@ $dir = rtrim($dir, '/');
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="">Dummy link...</a></li>
+                                    <li><a href="index.php?logout">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
