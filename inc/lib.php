@@ -370,7 +370,16 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
         $stmt->bindParam(':lName', $notApplicable); // This settings will come later
         //
         
+        
+        
         mkdir($home, 0777);
+        
+        shell_exec(
+		sprintf(
+			"useradd -d ".$homeEnter." ".$user." ", // Base command
+			"chown ".$user." ".$homeEnter." "
+		)
+	);
         
         // Insert the data into database
         $stmt->execute();
@@ -379,12 +388,40 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
 
 // Delete a user
 function user_delete($user) {
-	// Delete user file if it exists
-	if(is_file('data/users/'.strtolower(clean_alphanum($user)))) {
-		unlink('data/users/'.strtolower(clean_alphanum($user)));
-		return true;
-	} else
-		return false;
+	
+        
+        
+        $PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
+        $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
+        $dbh = new PDO('mysql:host=localhost;dbname=minepanel', $PDOUser, $PDOPass);
+        $dbh->exec("set names utf8");
+        $stmt = $dbh->prepare("SELECT 1 FROM users WHERE user = :user");//you're prepareing this query twice. Why?
+        
+        // Pass items in to get cleaned
+        $stmt->bindParam(':user', $user);
+        
+        // Delete user file if it exists
+        if ($stmt->execute() > 0) {
+                $data = $dbh->prepare("DELETE FROM users WHERE user = :user");
+                $data->bindParam(':user', $user);
+                $data->execute();
+                return true;
+        } else {
+                return false;
+        }
+        
+        
+        
+        
+        // Delete user file if it exists
+	//if(is_file('data/users/'.strtolower(clean_alphanum($user)))) {
+	//	unlink('data/users/'.strtolower(clean_alphanum($user)));
+	//	return true;
+	//} else
+	//	return false;
+        
+        
+        
 }
 
 // Get user data
@@ -402,7 +439,7 @@ function user_info($user) {
         if ($stmt->execute() > 0) {
                 $data = $dbh->prepare("SELECT * FROM users WHERE user = :user");
                 $data->bindParam(':user', $user);
-               $data->execute();
+                $data->execute();
              
                 $results = $data->Fetch( PDO::FETCH_ASSOC );//you need another code editor...
                 
@@ -426,13 +463,27 @@ function user_info($user) {
 
 // List users
 function user_list() {
-	$h = opendir('data/users/');
-	$users = array();
-	while(($f = readdir($h)) !== false)
-		if($f != '.' && $f != '..')
-			$users[] = $f;
-	closedir($h);
-	return $users;
+        $PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
+        $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
+        $dbh = new PDO('mysql:host=localhost;dbname=minepanel', $PDOUser, $PDOPass);
+        $dbh->exec("set names utf8");
+        $stmt = $dbh->prepare("SELECT * FROM users");
+        $stmt->execute();
+        
+        // Check it
+        $users = $stmt->fetchAll(PDO::FETCH_COLUMN, 2);
+        return $users;
+    
+    
+    
+    
+	//$h = opendir('data/users/');
+	//$users = array();
+	//while(($f = readdir($h)) !== false)
+	//	if($f != '.' && $f != '..')
+	//		$users[] = $f;
+	//closedir($h);
+	//return $users;
 }
 
 /////////////////////////

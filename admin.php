@@ -100,13 +100,15 @@ if ($_POST['action'] == 'server-stop')
 
         <div class="container" style="padding-top: 40px;">
             <h3>Administration</h3>
-            <?php if ($_POST['action'] == 'user-add') { ?>
-                <p class="alert alert-success pull-right"><i class="icon-ok"></i> User added successfully.</p>
-            <?php } elseif ($_POST['action'] == 'server-start') { ?>
-                <p class="alert alert-success pull-right"><i class="icon-ok"></i> Server started.</p>
-            <?php } elseif ($_POST['action'] == 'server-stop') { ?>
-                <p class="alert alert-success pull-right"><i class="icon-ok"></i> Server killed.</p>
-            <?php } ?>
+            <div id="button-side" style="float: right; margin-top: -70px;">
+                <?php if ($_POST['action'] == 'user-add') { ?>
+                    <p class="alert alert-success pull-right"><i class="icon-ok"></i> User added successfully.</p>
+                <?php } elseif ($_POST['action'] == 'server-start') { ?>
+                    <p class="alert alert-success pull-right"><i class="icon-ok"></i> Server started.</p>
+                <?php } elseif ($_POST['action'] == 'server-stop') { ?>
+                    <p class="alert alert-success pull-right"><i class="icon-ok"></i> Server killed.</p>
+                <?php } ?>
+            </div>
             <div class="clearfix"></div>
             <div class="row-fluid">
                 <div class="span8 well">
@@ -157,9 +159,28 @@ if ($_POST['action'] == 'server-stop')
                     </div>
 
                     <div class="well">
-                        <form action="admin.php" method="post" autocomplete="off">
-                            <input type="hidden" name="action" value="user-add">
-                            <legend>Add New User</legend>
+                        <form action="admin.php" method="post">
+                            <legend>Remove a User</legend>
+                            <input type="hidden" name="action" value="user-switch">
+                            <select name="user" style="vertical-align: top;">
+                                <?php
+                                $ul = user_list();
+                                foreach ($ul as $u)
+                                    echo '<option value="' . $u . '">' . $u . '</option>';
+                                ?>
+                            </select>
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                            <p><b>WARNING:</b> This change is irreversible!</p>
+                        </form>
+                    </div>
+                </div>
+                </br>
+                </br>
+                <div class="span12 well" style="margin-left: 0px;">
+                    <form action="admin.php" method="post" autocomplete="off">
+                        <input type="hidden" name="action" value="user-add">
+                        <legend>Add New User</legend>
+                        <div class="span4">
                             <div class="control-group">
                                 <label class="control-label" for="user">Username</label>
                                 <div class="controls">
@@ -179,6 +200,8 @@ if ($_POST['action'] == 'server-stop')
                                 </div>
                                 <a href="https://www.random.org/passwords/?num=1&len=8&format=html&rnd=new" target="_blank">Generate a password</a>
                             </div>
+                        </div>
+                        <div class="span4">
                             <div class="control-group">
                                 <label class="control-label" for="dir">Home Directory</label>
                                 <div class="controls">
@@ -192,7 +215,7 @@ if ($_POST['action'] == 'server-stop')
                                 <label class="control-label" for="ram">Server Memory</label>
                                 <div class="controls">
                                     <div class="input-append">
-                                        <input class="span3" type="number" name="ram" id="ram" value="512" style="width: 50%;">
+                                        <input class="span3" type="number" name="ram" id="ram" value="512" style="width: 150px;">
                                         <span class="add-on">MB</span>
                                     </div>
                                     <span class="text-info">0 MB = No Server</span>
@@ -201,22 +224,26 @@ if ($_POST['action'] == 'server-stop')
                             <div class="control-group">
                                 <label class="control-label" for="port">Server Port</label>
                                 <div class="controls">
-                                    <input class="span3" type="number" name="port" id="port" value="25565" style="width: 50%;">
+                                    <div class="input-append">
+                                        <input class="span3" type="number" name="port" id="port" value="25565" style="width: 150px;">
+                                    </div>
                                     <span class="text-info">0 = No Server</span>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label" for="role">User Role</label>
-                                <div class="controls">
-                                    <select name="role" id="role" class="span4">
-                                        <option value="user" selected>User</option>
-                                        <option value="admin">Administrator</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="role">User Role</label>
+                            <div class="controls">
+                                <select name="role" id="role" class="span3">
+                                    <option value="user" selected>User</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Add User</button>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add User</button>
+
+                    </form>
+
                 </div>
             </div>
         </div>

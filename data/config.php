@@ -26,4 +26,7 @@ define('KT_SCREEN_CMD_KILL','/usr/bin/screen -X -S %s quit');
 define('KT_SCREEN_CMD_KILLALL','killall /usr/bin/screen');
 define('KT_SCREEN_CMD_KILLALL_USER','for session in $(/usr/bin/screen -ls | /bin/grep -o \'[0-9]*\\.%s\'); do /usr/bin/screen -S "${session}" -X quit; done');
 
+// User account creation
+define('KT_SCREEN_USR_FTP_CREATE','');
+
 ?>
