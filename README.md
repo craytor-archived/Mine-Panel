@@ -11,9 +11,11 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Java 7
 - MySQL with PDO on
 
-## Configuration (Until I get install script working)
+## Configuration (until I get install script working)
 - The settings KT_DATABASE_HOST and KT_DATABASE_DB are not yet changeable.
-- Set KT_DATABASE_USERNAME and KT_DATABASE_PASSWORD to your database's username and password, respectively.
+- With that being said, create a database name mine-panel
+- Upload the database template to the database
+- Then set KT_DATABASE_USERNAME and KT_DATABASE_PASSWORD to your database's username and password, respectively.
 
 ### Installation
 
