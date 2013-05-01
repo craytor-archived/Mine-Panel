@@ -11,6 +11,10 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Java 7
 - MySQL with PDO on
 
+## Configuration (Until I get install script working)
+- The settings KT_DATABASE_HOST and KT_DATABASE_DB are not yet changeable.
+- Set KT_DATABASE_USERNAME and KT_DATABASE_PASSWORD to your database's username and password, respectively.
+
 ### Installation
 
 - Upload all of the files to a web-accessible directory on your server.
