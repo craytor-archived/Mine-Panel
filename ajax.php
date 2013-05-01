@@ -2,122 +2,91 @@
 require_once 'inc/lib.php';
 
 session_start();
-if(!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
-	// Not logged in, redirect to login page
-	header('Location: .');
-	exit('Not Authorized');
+
+if(!$user = user_info($_SESSION['user']))
+	exit();
+
+if(is_file($user['home'].'/server.log')) {
+switch($_POST['req']) {
+	case 'dir':
+		// Initial vars
+		$dirs = array();
+		$files = array();
+		
+		// Get directory contents
+		$h = opendir($user['home'].$_POST['dir']);
+		while(false!==($f = readdir($h)))
+		if($f != '.' && $f != '..')
+			if(is_dir($user['home'].$_POST['dir'].'/'.$f))
+				$dirs[] = $f;
+			elseif(is_file($user['home'].$_POST['dir'].'/'.$f))
+				$files[] = $f;
+		closedir($h);
+		unset($f);
+		
+		// Sort data
+		sort($dirs);
+		sort($files);
+		
+		// Get file sizes
+		$sizes = array();
+		foreach($files as $f)
+			$sizes[] = filesize($user['home'].$_POST['dir'].'/'.$f);
+		
+		// Output data
+		echo json_encode(array(
+			'dirs' => $dirs,
+			'files' => $files,
+			'sizes' => $sizes
+		));
+		
+		break;
+	case 'file_get':
+		if(is_file($user['home'].$_POST['file']))
+			echo file_get_contents($user['home'].$_POST['file']);
+		break;
+	case 'file_put':
+		if(is_file($user['home'].$_POST['file']))
+			file_put_contents($user['home'].$_POST['file'],$_POST['data']);
+		break;
+	case 'delete':
+		foreach($_POST['files'] as $f)
+			if(is_file($user['home'].$f))
+				unlink($user['home'].$f);
+		break;
+	case 'rename':
+		file_rename($_POST['path'],$_POST['newname'],$user['home']);
+		break;
+	case 'mkdir':
+		mkdir($user['home'].$_POST['dir'].'/'.$_POST['name']);
+		break;
+	case 'delete-dir':
+		rmdirr($user['home'].$_POST['dir']);
+		break;
+	case 'rename-dir':
+		file_rename($_POST['dir'],$_POST['new'],$user['home']);
+		break;
+	case 'server_start':
+		echo server_start($user['user']);
+		break;
+	case 'server_cmd':
+		server_cmd($user['user'],$_POST['cmd']);
+		break;
+	case 'server_stop':
+		server_stop($user['user']);
+		break;
+	case 'server_kill':
+		server_kill($user['user']);
+		break;
+	case 'server_running':
+		echo json_encode(server_running($user['user']));
+		break;
+	case 'server_log':
+		echo mclogparse(file_backread($user['home'].'/server.log',50));
+		break;
+}
+} else {
+    echo "Hey! It looks like you just got your server? Anxious to get started? Well it is really easy! You update your server</br> to the version you want, or if you want to see what it is like right out of the box, press that big green \"start\"</br> button over there!";
 }
 
-?><!doctype html>
-<html>
-<head>
-	<title>Console | MCHostPanel</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
-	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
-	<style type="text/css">
-		/* .tab-content,.nav-tabs > li.active > a,.nav-tabs > li.active > a:hover, */
-		#cmd,#log{background-color:#000;color:#fff;}
-		#cmd,#log{box-sizing:border-box;-moz-box-sizing:border-box;width:100%;}
-		#log{overflow-y:scroll;}
-		#cmd{height:30px;}
-		form{margin:0;}
-	</style>
-	<script src="js/jquery-1.7.2.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script type="text/javascript">
-		function refreshLog() {
-			updateStatus();
-			$.post('ajax.php',{
-				req: 'server_log'
-			},function(data){
-				if($('#log').scrollTop()==$('#log')[0].scrollHeight) {
-					$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
-				} else {
-					$('#log').html(data);
-				}
-				window.setTimeout('refreshLog();',1000);
-			});
-		}
-		
-		function refreshLogOnce() {
-			$.post('ajax.php',{
-				req: 'server_log'
-			},function(data){
-				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
-			});
-		}
-		
-		function updateStatus() {
-			$.post('ajax.php',{
-				req: 'server_running'
-			},function(data){
-				if(data) {
-					$('#cmd').prop('disabled',false);
-				} else {
-					$('#cmd').prop('disabled',true);
-				}
-			},'json');
-		}
-		
-		$(document).ready(function(){
-			
-			// Send commands with form onSubmit
-			$('#frm-cmd').submit(function(){
-				$.post('ajax.php',{
-					req: 'server_cmd',
-					cmd: $('#cmd').val()
-				},function(){
-					$('#cmd').val('').prop('disabled',false);
-					refreshLogOnce();
-				});
-				$('#cmd').prop('disabled',true);
-				return false;
-			});
-			
-			// Fix sizing
-			$('#log').css('height',$(window).height()-200+'px');
-			
-			// Check if server is running
-			updateStatus();
-			
-			// Initialize log
-			$.post('ajax.php',{
-				req: 'server_log'
-			},function(data){
-				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
-				window.setTimeout('refreshLog();',1000);
-			});
-			
-			// Keep sizing correct
-			$(document).resize(function(){
-				$('#log').css('height',$(window).height()-190+'px');
-			});
-			
-		});
-	</script>
-</head>
-<body>
-<?php require 'inc/top.php'; ?>
-	<ul class="nav nav-tabs" id="myTab">
-		<li><a href="dashboard.php">Dashboard</a></li>
-		<li><a href="files.php">File Manager</a></li>
-		<li class="active"><a href="console.php">Console</a></li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active">
-<?php if($user['ram']) { ?>
-			<pre id="log" class="well well-small"></pre>
-			<form id="frm-cmd">
-				<input type="text" id="cmd" name="cmd" maxlength="250" autofocus>
-			</form>
-<?php
-	} else
-		echo '<p class="alert alert-info">Your account does not have a server.</p>';
 ?>
-		</div>
-	</div>
-</body>
-</html>
