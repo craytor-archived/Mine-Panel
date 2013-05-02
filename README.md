@@ -34,5 +34,5 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Add any Minecraft server .jar file to the user's directory, and rename it "craftbukkit.jar"
 - If desired, you can now start the user's server from the Administration page
 
-## Installation Tutorials
+### Installation Tutorials
 - Will be ready soon
