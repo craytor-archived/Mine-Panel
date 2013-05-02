@@ -9,7 +9,8 @@ NOTE: Some features of this project including auto-updating and directory deleti
 
 - PHP 5
 - Java 7
-- MySQL with PDO on
+- MySQL with PDO enabled
+- 'Screen' installed
 
 ### Configuration (until I get install script working)
 - The settings KT_DATABASE_HOST and KT_DATABASE_DB are not yet changeable.
@@ -32,3 +33,6 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Use the "Add a New User" form to set up a new account, the home directory SHOULD NOT be web accessible
 - Add any Minecraft server .jar file to the user's directory, and rename it "craftbukkit.jar"
 - If desired, you can now start the user's server from the Administration page
+
+## Installation Tutorials
+- Will be ready soon
