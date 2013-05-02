@@ -11,7 +11,7 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Java 7
 - MySQL with PDO on
 
-## Configuration (until I get install script working)
+### Configuration (until I get install script working)
 - The settings KT_DATABASE_HOST and KT_DATABASE_DB are not yet changeable.
 - With that being said, create a database name mine-panel
 - Upload the database template to the database
