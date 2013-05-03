@@ -1,66 +1,170 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Mine-Panel by tjswebdev</title>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Mine-Panel</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Mine-Panel</h1>
-        <p>A Minecraft web application extended from Alan Hardman's MCHostPanel.</p>
+        <!-- Le styles -->
+        <link href="assets/css/bootstrap.css" rel="stylesheet">
+        <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="assets/css/docs.css" rel="stylesheet">
+        <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
 
-        <p class="view"><a href="https://github.com/tjswebdev/Mine-Panel">View the Project on GitHub <small>tjswebdev/Mine-Panel</small></a></p>
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="assets/js/html5shiv.js"></script>
+        <![endif]-->
+
+        <!-- Le fav and touch icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+    </head>
+
+    <body>
+
+        <!-- Navbar
+        ================================================== -->
+        <div class="navbar navbar-fixed-top navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" style="color: #fff;" href="./">Mine-Panel</a>
+                    <ul class="nav">
+                        <li class="active"><a href="./">Home</a></li>
+                        <li><a href="./docs/">Docs</a></li>
+                        <li><a href="./support/">Support</a></li>
+                    </ul>
+                    <ul class="nav" style="float: right; margin-top: 9px;">
+                        <li><span class="label label-info">Current Version: 0.8.1</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumbotron masthead">
+            <div class="container">
+                <h1>Mine-Panel</h1>
+                <p>A <i>open-source</i> Minecraft control panel for personal servers and for the enterprise hosting world!</p>
+                <p>
+                    <a href="https://github.com/tjswebdev/Mine-Panel" class="btn btn-primary btn-large" >View MinePanel on GitHub</a>
+                    <a href="" class="btn btn-success btn-large" >Try MinePanel</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="bs-docs-social">
+            <div class="container">
+                <ul class="bs-docs-social-buttons">
+                    <li>
+                        <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=tjswebdev&repo=Mine-Panel&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+                    </li>
+                    <li>
+                        <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=tjswebdev&repo=Mine-Panel&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="marketing">
+
+                <h1>What is Mine-Panel.</h1>
+                <p class="marketing-byline">It's simple. It's free. It's open-source. It's quality.</p>
+
+                <div class="row-fluid">
+                    <div class="span12">
+                        <p>
+                            Mine-Panel is a Minecraft hosting panel for both enterprise, and home start ups! The panel is very flexible and can be easily modded to fit your needs. With new updates being released by the day - your panel will almost always be up to date! Mine-Panel is created and ran by a server owner (Craytor) which is the developer of Mine-Panel! There are multiple things that will eventually be added to the panel, but I can't do it all at a split second. That's where you can come in. Mine-Panel is still in BETA, and if you find bugs while using Mine-Panel, press "Support" in the top bar of this site. Then please briefly describe what is going on. If you want to help out, simply make a pull request. 
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="soften">
+
+                <h1>Why should I use it?</h1>
+                <p class="marketing-byline">For even more sites built with Bootstrap, <a href="http://builtwithbootstrap.tumblr.com/" target="_blank">visit the unofficial Tumblr</a> or <a href="./getting-started.html#examples">browse the examples</a>.</p>
+                <div class="row-fluid">
+                    <ul class="thumbnails example-sites">
+                        <li class="span3">
+                            <a class="thumbnail" href="http://soundready.fm/" target="_blank">
+                                <img src="assets/img/example-sites/soundready.png" alt="SoundReady.fm">
+                            </a>
+                        </li>
+                        <li class="span3">
+                            <a class="thumbnail" href="http://kippt.com/" target="_blank">
+                                <img src="assets/img/example-sites/kippt.png" alt="Kippt">
+                            </a>
+                        </li>
+                        <li class="span3">
+                            <a class="thumbnail" href="http://www.gathercontent.com/" target="_blank">
+                                <img src="assets/img/example-sites/gathercontent.png" alt="Gather Content">
+                            </a>
+                        </li>
+                        <li class="span3">
+                            <a class="thumbnail" href="http://www.jshint.com/" target="_blank">
+                                <img src="assets/img/example-sites/jshint.png" alt="JS Hint">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
 
 
-        <ul>
-          <li><a href="https://github.com/tjswebdev/Mine-Panel/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/tjswebdev/Mine-Panel/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/tjswebdev/Mine-Panel">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>Welcome to GitHub Pages.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+        <!-- Footer
+        ================================================== -->
+        <footer class="footer">
+            <div class="container">
+                <p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
+                <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+                <p><a href="http://glyphicons.com">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+                <ul class="footer-links">
+                    <li><a href="http://blog.getbootstrap.com">Blog</a></li>
+                    <li class="muted">&middot;</li>
+                    <li><a href="https://github.com/twitter/bootstrap/issues?state=open">Issues</a></li>
+                    <li class="muted">&middot;</li>
+                    <li><a href="https://github.com/twitter/bootstrap/blob/master/CHANGELOG.md">Changelog</a></li>
+                </ul>
+            </div>
+        </footer>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
-<h3>Designer Templates</h3>
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script src="assets/js/jquery.js"></script>
+        <script src="assets/js/bootstrap-transition.js"></script>
+        <script src="assets/js/bootstrap-alert.js"></script>
+        <script src="assets/js/bootstrap-modal.js"></script>
+        <script src="assets/js/bootstrap-dropdown.js"></script>
+        <script src="assets/js/bootstrap-scrollspy.js"></script>
+        <script src="assets/js/bootstrap-tab.js"></script>
+        <script src="assets/js/bootstrap-tooltip.js"></script>
+        <script src="assets/js/bootstrap-popover.js"></script>
+        <script src="assets/js/bootstrap-button.js"></script>
+        <script src="assets/js/bootstrap-collapse.js"></script>
+        <script src="assets/js/bootstrap-carousel.js"></script>
+        <script src="assets/js/bootstrap-typeahead.js"></script>
+        <script src="assets/js/bootstrap-affix.js"></script>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+        <script src="assets/js/holder/holder.js"></script>
+        <script src="assets/js/google-code-prettify/prettify.js"></script>
 
-<h3>Rather Drive Stick?</h3>
+        <script src="assets/js/application.js"></script>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
 
-<h3>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/tjswebdev">tjswebdev</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+    </body>
 </html>
