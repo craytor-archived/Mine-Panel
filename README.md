@@ -5,12 +5,15 @@ Mine-Panel can manage an unlimited number of Minecraft control panels, including
 
 NOTE: Some features of this project including auto-updating and directory deleting/renaming are currently broken, and have been disabled.
 
-### Requirements
+## Requirements
 
+### You need the following to run Mine-Panel
 - PHP 5
 - Java 7
 - MySQL with PDO enabled
 - 'Screen' installed
+
+## Installation
 
 ### Configuration (until I get install script working)
 - The settings KT_DATABASE_HOST and KT_DATABASE_DB are not yet changeable.
@@ -18,7 +21,7 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Upload the database template to the database
 - Then set KT_DATABASE_USERNAME and KT_DATABASE_PASSWORD to your database's username and password, respectively.
 
-### Installation
+### How to Install in a Nutshell
 
 - Upload all of the files to a web-accessible directory on your server.
 - Edit data/config.php and set KT_LOCAL_IP to your server's public IP address
