@@ -18,6 +18,7 @@ body {
   padding-top: 40px;
   max-width: 1920px;
   background-image: url('https://www.tjswebdev.com/img/squares.png');
+  background-attachment: fixed;
 }
 
 /* Code in headings */
