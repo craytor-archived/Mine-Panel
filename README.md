@@ -8,6 +8,7 @@ NOTE: Some features of this project including auto-updating and directory deleti
 ## Requirements
 
 ### You need the following to run Mine-Panel
+- A Linux OS (Preferably Ubuntu)
 - PHP 5
 - Java 7
 - MySQL with PDO enabled
