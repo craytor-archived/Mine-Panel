@@ -1,4 +1,4 @@
-## Mine-Panel -- Current Version: 0.8.1
+## Mine-Panel - Current Version: 0.8.1
 A lightweight Minecraft control panel for hosting companies
 
 Mine-Panel can manage an unlimited number of Minecraft control panels, including CraftBukkit, Tekkit, and any other custom build that uses a .jar file.
