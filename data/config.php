@@ -1,5 +1,8 @@
 <?php // Mine-Panel Configuration
 
+// All info in this file will be soon editable in the database
+
+
 // Database Details
 define('KT_DATABASE_HOST','localhost');
 define('KT_DATABASE_USERNAME','minepanel');
