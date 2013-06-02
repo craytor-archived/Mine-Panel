@@ -217,7 +217,7 @@ if ($_SESSION['user']) {
                         <button id="btn-srv-start" class="btn btn-success" disabled>Start</button> <button id="btn-srv-restart" class="btn btn-warning" disabled>Reboot</button> <button href="#" id="btn-srv-stop" class="btn btn-danger" disabled>Stop</button></br><a href="#update" class="btn btn-info" role="button" class="btn" data-toggle="modal" style="margin-top: 4px;">Update</a><br />
                     </div>
                     <h3>Server Information</h3>
-                    <b>IP:</b> <?php echo KT_LOCAL_IP; ?><br />
+                    <b>IP:</b> <?php echo $user['ip']; ?><br />
                     <b>Port:</b> <?php echo $user['port']; ?><br />
                     <b>RAM:</b> <?php echo $user['ram']; ?> MB<br />
                     <footer>

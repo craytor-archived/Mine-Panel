@@ -223,21 +223,42 @@ function rmdirr($dirname) {
 // SERVER FUNCTIONS //
 //////////////////////
 
-// Start a server with a given username
-function server_start($name) {
 
-	// Get user details
-	$user = user_info($name);
-	
-	// Make sure server isn't already running
-	if(server_running($user['user']))
-		return false;
-	
-	// Check that server has a .jar
-	if(is_file($user['home'].'/craftbukkit.jar')) {
-		
-		// Verify server.properties (Prevent user from modifying port)
+function checkIP() {
+    // Verify server.properties (Prevent user from modifying port)
 		if(is_file($user['home'].'/server.properties')) {
+			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+			
+			// Remove any port setting
+			foreach($prop as $i=>$p) {
+				if(strpos($p,'server-ip')!==false) {
+					unset($prop[$i]);
+					continue;
+				}
+			}
+			
+			// Add user's port
+			$prop[] = 'server-ip='.$user['ip'];
+			
+			// Save properties file
+			file_put_contents($user['home'].'/server.properties',implode("\n",$prop));
+			
+		} else {
+			// File doesn't exist, use template from ./serverbase
+			file_put_contents(
+				$user['home'].'/server.properties',
+				str_replace(
+					'%IP%',
+					$user['ip'],
+					file_get_contents('serverbase/server.properties')
+				)
+			);
+		}
+}
+
+
+function checkPort(){
+    if(is_file($user['home'].'/server.properties')) {
 			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
 			
 			// Remove any port setting
@@ -265,7 +286,157 @@ function server_start($name) {
 				)
 			);
 		}
+}
+
+function checkSlots() {
+        if(is_file($user['home'].'/server.properties')) {
+			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+			
+			// Remove any port setting
+			foreach($prop as $i=>$p) {
+				if(strpos($p,'max-players')!==false) {
+					unset($prop[$i]);
+					continue;
+				}
+			}
+			
+			// Add user's port
+			$prop[] = 'max-players='.intval($user['slots']);
+			
+			// Save properties file
+			file_put_contents($user['home'].'/server.properties',implode("\n",$prop));
+			
+		} else {
+			// File doesn't exist, use template from ./serverbase
+			file_put_contents(
+				$user['home'].'/server.properties',
+				str_replace(
+					'%SLOTS%',
+					intval($user['port']),
+					file_get_contents('serverbase/server.properties')
+				)
+			);
+		}
+}
+
+
+
+
+
+// Start a server with a given username
+function server_start($name) {
+
+	// Get user details
+	$user = user_info($name);
+	
+	// Make sure server isn't already running
+	if(server_running($user['user']))
+		return false;
+	
+	// Check that server has a .jar
+	if(is_file($user['home'].'/craftbukkit.jar')) {
+
+		//checkIP();
+
+            // Verify server.properties (Prevent user from modifying port)
+		if(is_file($user['home'].'/server.properties')) {
+			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+			
+			// Remove any port setting
+			foreach($prop as $i=>$p) {
+				if(strpos($p,'server-ip')!==false) {
+					unset($prop[$i]);
+					continue;
+				}
+			}
+			
+			// Add user's port
+			$prop[] = 'server-ip='.$user['ip'];
+			
+			// Save properties file
+			file_put_contents($user['home'].'/server.properties',implode("\n",$prop));
+			
+		} else {
+			// File doesn't exist, use template from ./serverbase
+			file_put_contents(
+				$user['home'].'/server.properties',
+				str_replace(
+					'%IP%',
+					intval($user['ip']),
+					file_get_contents('serverbase/server.properties')
+				)
+			);
+		}
+
+
+
+        //checkPort();
+
+        if(is_file($user['home'].'/server.properties')) {
+			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+			
+			// Remove any port setting
+			foreach($prop as $i=>$p) {
+				if(strpos($p,'server-port')!==false) {
+					unset($prop[$i]);
+					continue;
+				}
+			}
+			
+			// Add user's port
+			$prop[] = 'server-port='.intval($user['port']);
+			
+			// Save properties file
+			file_put_contents($user['home'].'/server.properties',implode("\n",$prop));
+			
+		} else {
+			// File doesn't exist, use template from ./serverbase
+			file_put_contents(
+				$user['home'].'/server.properties',
+				str_replace(
+					'%PORT%',
+					intval($user['port']),
+					file_get_contents('serverbase/server.properties')
+				)
+			);
+		}
+
+
+
+        //checkSlots();
 		
+		
+         if(is_file($user['home'].'/server.properties')) {
+			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+			
+			// Remove any port setting
+			foreach($prop as $i=>$p) {
+				if(strpos($p,'max-players')!==false) {
+					unset($prop[$i]);
+					continue;
+				}
+			}
+			
+			// Add user's port
+			$prop[] = 'max-players='.intval($user['slots']);
+			
+			// Save properties file
+			file_put_contents($user['home'].'/server.properties',implode("\n",$prop));
+			
+		} else {
+			// File doesn't exist, use template from ./serverbase
+			file_put_contents(
+				$user['home'].'/server.properties',
+				str_replace(
+					'%SLOTS%',
+					intval($user['port']),
+					file_get_contents('serverbase/server.properties')
+				)
+			);
+		}
+
+
+
 		// Launch server process in a detached GNU Screen
 		shell_exec(
 			'cd '.escapeshellarg($user['home']).'; '. // Change to server directory
@@ -339,13 +510,13 @@ function server_running($name) {
 ////////////////////
 
 // Add a new user
-function user_add($user,$pass,$role,$home,$ram,$port) {
+function user_add($user,$pass,$role,$home,$ram,$port,$ip) {
         // Details for query
-	$PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
+	    $PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
         $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
         $dbh = new PDO('mysql:host=localhost;dbname=minepanel', $PDOUser, $PDOPass);
         $dbh->exec("set names utf8");
-        $stmt = $dbh->prepare("INSERT INTO users (ID, email, user, pass, role, home, ram, ip, port, fName, lName) VALUES (:ID, :email, :user, :pass, :role, :home, :ram, :ip, :port, :fName, :lName)");
+        $stmt = $dbh->prepare("INSERT INTO users (ID, email, user, pass, role, home, ram, ip, port, fName, lName, slots) VALUES (:ID, :email, :user, :pass, :role, :home, :ram, :ip, :port, :fName, :lName, :slots)");
         
         // Pass items in to get cleaned
         $id = null;
@@ -353,8 +524,11 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
         $passEnter = bcrypt($pass);
         $homeEnter = $home;
         $ramEnter = intval($ram);
-        $portEnter = intval($port);
+        $portEnter = $port;
         $notApplicable = "No data yet";
+        $ipEnter = $ip;
+        $slots = "10";
+
         
         // Clean items up, get them clean of any hazards
         $stmt->bindParam(':ID', $id, PDO::PARAM_INT);
@@ -364,10 +538,11 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
         $stmt->bindParam(':role', $role);
         $stmt->bindParam(':home', $homeEnter);
         $stmt->bindParam(':ram', $ramEnter);
-        $stmt->bindParam(':ip', $notApplicable); // This settings will come later
+        $stmt->bindParam(':ip', $ipEnter); // This settings will come later
         $stmt->bindParam(':port', $portEnter);
         $stmt->bindParam(':fName', $notApplicable); // This settings will come later
         $stmt->bindParam(':lName', $notApplicable); // This settings will come later
+        $stmt->bindParam(':slots', $slots); // This settings will come later
         //
         
         
@@ -388,39 +563,21 @@ function user_add($user,$pass,$role,$home,$ram,$port) {
 
 // Delete a user
 function user_delete($user) {
-	
-        
-        
-        $PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
+        // Details for query
+	    $PDOUser = KT_DATABASE_USERNAME; //Username for MySQL
         $PDOPass = KT_DATABASE_PASSWORD; //Password for MySQL
         $dbh = new PDO('mysql:host=localhost;dbname=minepanel', $PDOUser, $PDOPass);
         $dbh->exec("set names utf8");
-        $stmt = $dbh->prepare("SELECT 1 FROM users WHERE user = :user");//you're prepareing this query twice. Why?
+        $stmt = $dbh->prepare("DELETE FROM users WHERE user = :user");
         
         // Pass items in to get cleaned
-        $stmt->bindParam(':user', $user);
+        $id = null;
+        $userEnter = $user;
+
+        $stmt->bindParam(':user', $userEnter);
+        //
         
-        // Delete user file if it exists
-        if ($stmt->execute() > 0) {
-                $data = $dbh->prepare("DELETE FROM users WHERE user = :user");
-                $data->bindParam(':user', $user);
-                $data->execute();
-                return true;
-        } else {
-                return false;
-        }
-        
-        
-        
-        
-        // Delete user file if it exists
-	//if(is_file('data/users/'.strtolower(clean_alphanum($user)))) {
-	//	unlink('data/users/'.strtolower(clean_alphanum($user)));
-	//	return true;
-	//} else
-	//	return false;
-        
-        
+        $stmt->execute();
         
 }
 

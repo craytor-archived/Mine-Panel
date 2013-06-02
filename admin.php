@@ -23,7 +23,11 @@ if ($_POST['action'] == 'user-switch' && $_POST['user']) {
 
 // Add new user
 if ($_POST['action'] == 'user-add')
-    user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
+    user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port'], $_POST['ip'], $_POSTS['slots']);
+
+// Add new user
+if ($_POST['action'] == 'user-delete')
+    user_delete($_POST['userName']);
 
 // Start a server
 if ($_POST['action'] == 'server-start') {
@@ -161,8 +165,8 @@ if ($_POST['action'] == 'server-stop')
                     <div class="well">
                         <form action="admin.php" method="post">
                             <legend>Remove a User</legend>
-                            <input type="hidden" name="action" value="user-switch">
-                            <select name="user" style="vertical-align: top;">
+                            <input type="hidden" name="action" value="user-delete">
+                            <select name="userName" style="vertical-align: top;">
                                 <?php
                                 $ul = user_list();
                                 foreach ($ul as $u)
@@ -207,7 +211,7 @@ if ($_POST['action'] == 'server-stop')
                                 <div class="controls">
                                     <div class="input-prepend">
                                         <span class="add-on"><i class="icon-folder-open"></i></span>
-                                        <input class="span10" type="text" name="dir" id="dir" value="/home/admin/Minecraft/" style="width: 100%;">
+                                        <input class="span10" type="text" name="dir" id="dir" value="/home/Minecraft/" style="width: 100%;">
                                     </div>
                                 </div>
                             </div>
@@ -228,6 +232,22 @@ if ($_POST['action'] == 'server-stop')
                                         <input class="span3" type="number" name="port" id="port" value="25565" style="width: 150px;">
                                     </div>
                                     <span class="text-info">0 = No Server</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ip">Server IP</label>
+                                <div class="controls">
+                                    <div class="input-append">
+                                        <input class="span3" type="text" name="ip" id="ip" style="width: 150px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ip">Slots</label>
+                                <div class="controls">
+                                    <div class="input-append">
+                                        <input class="span3" type="text" name="slots" id="slots" style="width: 150px;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
