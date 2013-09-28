@@ -5,6 +5,7 @@ Mine-Panel can manage an unlimited number of Minecraft control panels, including
 
 NOTE: Some features of this project including auto-updating and directory deleting/renaming are currently broken, and have been disabled.
 
+
 ## Requirements
 
 ### You need the following to run Mine-Panel
